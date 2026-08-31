@@ -2,6 +2,11 @@
 
 import { patch } from "@web/core/utils/patch";
 import { PosOrderline } from "@point_of_sale/app/models/pos_order_line";
+import { Orderline } from "@point_of_sale/app/generic_components/orderline/orderline";
+
+// Allow the extra key produced by getDisplayData() below to pass the
+// strict props validation of the generic Orderline component.
+Orderline.props.line.shape.submittedTime = { type: String, optional: true };
 
 patch(PosOrderline.prototype, {
     setup(vals) {
