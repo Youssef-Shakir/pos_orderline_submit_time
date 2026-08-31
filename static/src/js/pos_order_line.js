@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { patch } from "@web/core/utils/patch";
-import { PosOrderline } from "@point_of_sale/app/store/models";
+import { PosOrderline } from "@point_of_sale/app/models/pos_order_line";
 
 patch(PosOrderline.prototype, {
     setup(vals) {
