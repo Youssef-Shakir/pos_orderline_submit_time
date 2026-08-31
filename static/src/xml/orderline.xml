@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="pos_orderline_submit_time.OrderlineSubmitTime"
+       t-inherit="point_of_sale.Orderline"
+       t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('justify-content-between')]" position="after">
+            <div t-if="line.submittedTime"
+                 class="orderline-submitted-time text-muted fst-italic w-100"
+                 style="font-size: 0.72rem;">
+                <i class="fa fa-clock-o me-1" role="img"
+                   aria-label="Submitted time" title="Submitted time"/>
+                Submitted: <t t-esc="line.submittedTime"/>
+            </div>
+        </xpath>
+    </t>
+
+</templates>
