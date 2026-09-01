@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="pos_orderline_submit_time.OrderOpenTimer">
+        <div t-if="hasTable and state.openTime"
+             class="order-open-timer d-flex align-items-center gap-2 px-2 py-1 rounded border"
+             style="background-color: #f8f9fa; font-size: 0.8rem;">
+            <div class="d-flex align-items-center gap-1">
+                <i class="fa fa-calendar text-muted" role="img" aria-label="Open date"/>
+                <span class="fw-bold text-dark">
+                    <t t-esc="state.openTime"/>
+                </span>
+            </div>
+            <div class="border-start ps-2 d-flex align-items-center gap-1">
+                <i class="fa fa-clock-o text-danger" role="img" aria-label="Elapsed time"/>
+                <span class="fw-bold text-danger">
+                    <t t-esc="state.elapsedTime"/>
+                </span>
+            </div>
+        </div>
+    </t>
+
+    <!-- Extend the Navbar to include our timer for desktop -->
+    <t t-name="pos_orderline_submit_time.NavbarOrderTimer"
+       t-inherit="point_of_sale.Navbar"
+       t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('pos-centerheader')]" position="after">
+            <div t-if="!ui.isSmall" class="d-flex align-items-center">
+                <OrderOpenTimer order="pos.get_order()"/>
+            </div>
+        </xpath>
+        <!-- Timer for mobile view -->
+        <xpath expr="//div[hasclass('pos-leftheader')]" position="after">
+            <div t-if="ui.isSmall" class="flex-grow-1 d-flex justify-content-center">
+                <OrderOpenTimer order="pos.get_order()"/>
+            </div>
+        </xpath>
+    </t>
+
+</templates>

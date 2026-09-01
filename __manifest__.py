@@ -16,7 +16,10 @@ on the saved order and printed information.
     "assets": {
         "point_of_sale._assets_pos": [
             "pos_orderline_submit_time/static/src/js/pos_order_line.js",
+            "pos_orderline_submit_time/static/src/js/pos_order.js",
+            "pos_orderline_submit_time/static/src/js/order_open_timer.js",
             "pos_orderline_submit_time/static/src/xml/orderline.xml",
+            "pos_orderline_submit_time/static/src/xml/order_open_timer.xml",
         ],
     },
     "installable": True,

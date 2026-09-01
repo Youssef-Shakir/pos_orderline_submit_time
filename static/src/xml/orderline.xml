@@ -9,8 +9,8 @@
                  class="orderline-submitted-time text-muted fst-italic w-100"
                  style="font-size: 0.72rem;">
                 <i class="fa fa-clock-o me-1" role="img"
-                   aria-label="Submitted time" title="Submitted time"/>
-                Submitted: <t t-esc="line.submittedTime"/>
+                   aria-label="Added time" title="Added time"/>
+                Added: <t t-esc="line.submittedTime"/>
             </div>
         </xpath>
     </t>
