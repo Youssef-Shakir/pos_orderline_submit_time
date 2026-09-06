@@ -4,13 +4,13 @@
 
     <t t-name="pos_orderline_submit_time.OrderOpenTimer">
         <div t-if="state.openTime"
-             class="pos-order-open-timer d-flex align-items-center gap-2 px-2 py-1 rounded border bg-light text-dark"
-             style="font-size: 0.8rem;">
-            <span class="d-flex align-items-center gap-1">
+             class="pos-order-open-timer d-inline-flex align-items-center gap-2 px-2 py-1 rounded border bg-light text-dark">
+            <!-- Open date: hidden on phones/tablets where the top bar is cramped. -->
+            <span class="pos-open-date d-none d-md-inline-flex align-items-center gap-1">
                 <i class="fa fa-calendar text-muted" role="img" aria-label="Order opened at"/>
                 <span class="fw-bold" t-esc="state.openTime"/>
             </span>
-            <span class="border-start ps-2 d-flex align-items-center gap-1">
+            <span class="pos-open-elapsed d-inline-flex align-items-center gap-1 ps-md-2">
                 <i class="fa fa-clock-o text-danger" role="img" aria-label="Time since opened"/>
                 <span class="fw-bold text-danger" t-esc="state.elapsedTime"/>
             </span>

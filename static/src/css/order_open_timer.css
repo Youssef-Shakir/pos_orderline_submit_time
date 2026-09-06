@@ -12,11 +12,29 @@
     transform: translate(-50%, -50%);
     z-index: 5;
     pointer-events: none;
+    max-width: 100%;
 }
 
-/* Hide it on narrow screens where the top bar has no spare room. */
-@media (max-width: 768px) {
-    .pos-order-open-timer-wrapper {
-        display: none;
+.pos-order-open-timer {
+    font-size: 0.8rem;
+    line-height: 1.1;
+    white-space: nowrap;
+}
+
+/* Divider between the open date and the elapsed timer (date is hidden on
+   small screens, so only draw it when the date is visible). */
+@media (min-width: 768px) {
+    .pos-order-open-timer .pos-open-elapsed {
+        border-left: 1px solid rgba(0, 0, 0, 0.15);
+    }
+}
+
+/* Phones / tablets: only the compact "clock + HH:MM:SS" chip is rendered
+   (see the d-none d-md-* classes in the template); shrink it a touch so it
+   never fights the surrounding top-bar controls. */
+@media (max-width: 767.98px) {
+    .pos-order-open-timer {
+        font-size: 0.72rem;
+        padding: 0.1rem 0.4rem !important;
     }
 }
