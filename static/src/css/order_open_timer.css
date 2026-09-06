@@ -1,0 +1,22 @@
+/* Author: Yousif Shakir - https://donialink.com */
+
+/* Establish a containing block so the timer can be centred over the top bar. */
+.pos-topheader {
+    position: relative;
+}
+
+.pos-order-open-timer-wrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* Hide it on narrow screens where the top bar has no spare room. */
+@media (max-width: 768px) {
+    .pos-order-open-timer-wrapper {
+        display: none;
+    }
+}

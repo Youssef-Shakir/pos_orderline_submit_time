@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
+    <!-- Author: Yousif Shakir - https://donialink.com -->
 
     <t t-name="pos_orderline_submit_time.OrderlineSubmitTime"
        t-inherit="point_of_sale.Orderline"

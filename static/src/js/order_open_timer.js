@@ -1,71 +1,63 @@
 /** @odoo-module **/
+// Author: Yousif Shakir - https://donialink.com
 
-import { Component, useState, onMounted, onWillUnmount } from "@odoo/owl";
+import { Component, useState, onWillUnmount } from "@odoo/owl";
 import { Navbar } from "@point_of_sale/app/navbar/navbar";
+import { posNow, parsePosDateTime } from "@pos_orderline_submit_time/js/pos_local_time";
 
 export class OrderOpenTimer extends Component {
     static template = "pos_orderline_submit_time.OrderOpenTimer";
-    static props = {
-        order: { type: Object, optional: true },
-    };
+    static props = { pos: Object };
 
     setup() {
-        this.state = useState({
-            elapsedTime: "00:00:00",
-            openTime: "",
-        });
-        this.intervalId = null;
+        this.state = useState({ elapsedTime: "00:00:00", openTime: "" });
 
-        onMounted(() => {
-            this.updateTimer();
-            this.intervalId = setInterval(() => this.updateTimer(), 1000);
-        });
-
-        onWillUnmount(() => {
-            if (this.intervalId) {
-                clearInterval(this.intervalId);
-            }
-        });
+        // A single ticking interval; the render reads reactive `state`.
+        this.updateTimer();
+        this.intervalId = setInterval(() => this.updateTimer(), 1000);
+        onWillUnmount(() => clearInterval(this.intervalId));
     }
 
-    get hasTable() {
-        return this.props.order && this.props.order.table_id;
+    /** Current order, tolerant of the get_order()/getOrder() naming. */
+    get order() {
+        const pos = this.props.pos;
+        if (typeof pos.get_order === "function") {
+            return pos.get_order();
+        }
+        if (typeof pos.getOrder === "function") {
+            return pos.getOrder();
+        }
+        return null;
     }
 
     updateTimer() {
-        const order = this.props.order;
-        if (!order || !order.x_order_open_time) {
+        const order = this.order;
+        const openTime = order && order.x_order_open_time;
+        if (!openTime) {
             this.state.elapsedTime = "00:00:00";
             this.state.openTime = "";
             return;
         }
+        this.state.openTime = openTime;
 
-        this.state.openTime = order.x_order_open_time;
-
-        // Parse the open time and calculate elapsed
-        const openDateTime = luxon.DateTime.fromFormat(
-            order.x_order_open_time,
-            "dd/MM/yyyy HH:mm:ss"
-        );
-
+        const openDateTime = parsePosDateTime(openTime);
         if (!openDateTime.isValid) {
             this.state.elapsedTime = "00:00:00";
             return;
         }
 
-        const now = luxon.DateTime.now();
-        const diff = now.diff(openDateTime, ["hours", "minutes", "seconds"]);
-
-        const hours = Math.floor(diff.hours).toString().padStart(2, "0");
-        const minutes = Math.floor(diff.minutes).toString().padStart(2, "0");
-        const seconds = Math.floor(diff.seconds).toString().padStart(2, "0");
-
-        this.state.elapsedTime = `${hours}:${minutes}:${seconds}`;
+        const diff = posNow().diff(openDateTime);
+        let totalSeconds = Math.floor(diff.as("seconds"));
+        if (totalSeconds < 0) {
+            totalSeconds = 0;
+        }
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        const pad = (n) => n.toString().padStart(2, "0");
+        this.state.elapsedTime = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
     }
 }
 
-// Register component so it's available in templates
-Navbar.components = {
-    ...Navbar.components,
-    OrderOpenTimer,
-};
+// Make the component resolvable from the inherited Navbar template.
+Navbar.components = { ...(Navbar.components || {}), OrderOpenTimer };
