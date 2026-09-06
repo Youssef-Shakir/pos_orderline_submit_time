@@ -48,7 +48,7 @@ The logic lives in `static/src/js/pos_local_time.js`.
 | File | Purpose |
 | --- | --- |
 | `models/pos_order_line.py` | Adds `x_submitted_time` and exposes it via `_load_pos_data_fields`. |
-| `models/pos_order.py` | Adds `x_order_open_time` and exposes it via `_load_pos_data_fields`. |
+| `models/pos_order.py` | Adds `x_order_open_time` (auto-loaded, `pos.order` loads all fields). |
 | `static/src/js/pos_local_time.js` | Shared helper: resolves "now" in the Odoo user's timezone. |
 | `static/src/js/pos_order_line.js` | Patches `PosOrderline` to stamp the time and feed it to the UI. |
 | `static/src/js/pos_order.js` | Patches `PosOrder` to stamp `x_order_open_time` when an order opens. |
